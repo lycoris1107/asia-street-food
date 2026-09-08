@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malaysia Street Food</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      background-color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    /* Left Navigation */
+    .sidebar {
+      width: 225px;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      color: white;
+      padding: 30px 0;
+      box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo span {
+      color: #ffd700;
+    }
+
+    .logo i {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 5px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      padding: 15px 30px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    nav ul li a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 4px solid #ffd700;
+    }
+
+    nav ul li a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      color: white;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      padding: 10px 20px;
+      cursor: pointer;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1100;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 255px;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 950px;
+      width: 100%;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .title-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .title-section h1 {
+      font-size: 30px;
+      margin: 0;
+      color: #333;
+      margin-bottom: 25px;
+      font-family: 'Pacifico', cursive;
+    }
+
+    .title-section p {
+      font-size: 14px;
+      color: #666;
+      margin: 5px 0 0;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+
+    .transparent-divider {
+      width: 100%;
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.2);
+      margin: 20px 0;
+    }
+
+    .pattern {
+      flex: 0 0 auto;
+    }
+
+    .pattern img {
+      max-width: 300px;
+      height: auto;
+      display: block;
+    }
+
+    .divider {
+      width: 2px;
+      background-color: #000;
+      margin: 0 20px;
+      align-self: stretch;
+    }
+
+    .explanation {
+      flex: 1;
+      padding-left: 20px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      background-color: #5599FF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .buttons button:hover {
+      background-color: #99BBFF;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .bradley-hand {
+      font-family: 'Bradley Hand ITC', 'Indie Flower', 'Comic Sans MS', cursive;
+    }
+
+    /* Responsive Design for Mobile */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        transform: translateX(-100%);
+        z-index: 1000;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 60px 10px 20px;
+      }
+
+      .container {
+        min-height: auto;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pattern img {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .divider {
+        display: none;
+      }
+
+      .explanation {
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Horizontal Navigation in Mobile Mode */
+      nav ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+      }
+
+      nav ul li {
+        margin-bottom: 0;
+      }
+
+      nav ul li a {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+
+      nav ul li a:hover {
+        padding-left: 15px; /* Override desktop hover effect */
+      }
+
+      nav ul li a.active {
+        border-left: none;
+        border-bottom: 4px solid #ffd700;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Left Navigation -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <h1>
+        <i class="fas fa-utensils"></i>
+        Asia<span>Street Food</span>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+	<li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="navigation.html"><i class="fas fa-compass"></i> Navigation</a></li>
+        <li><a href="news.html"><i class="fas fa-newspaper"></i> News</a></li>
+        <li><a href="membership.html"><i class="fas fa-user-plus"></i> Membership</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <div class="title-section">
+        <h1>Malaysia Street Food</h1>
+        <p>Malaysian street food is a vibrant fusion of Malay, Chinese, and Indian culinary traditions, creating a diverse and flavorful dining experience. It's an integral part of the country's culture, found in bustling hawker centers, open-air food courts, and night markets (pasar malam). The food is known for being incredibly affordable, fresh, and served quickly. Popular dishes include classics like Nasi Lemak (coconut rice with various accompaniments), Satay (grilled skewers with peanut sauce), Roti Canai (flaky flatbread with curry), and various types of noodles and soups like Laksa. It's a true feast for the senses, offering a glimpse into the nation's multicultural heritage.</p>
+      </div>
+      <div class="transparent-divider"></div>
+      <div class="content">
+        <div class="pattern">
+          <img src="Nasi.jpg" alt="Nasi">
+        </div>
+        <div class="divider"></div>
+        <div class="explanation">
+          <h1 class="bradley-hand">Nasi Lemak</h1>
+          <p>Often considered the national dish, this is fragrant rice cooked in coconut milk and pandan leaf. It's usually served with sambal (a spicy chili paste), fried anchovies, peanuts, cucumber, and a hard-boiled egg.</p>
+          <div class="buttons">
+            <button onclick="showModal('recipe')">Recipe</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="transparent-divider"></div>
+      <div class="content">
+        <div class="pattern">
+          <img src="Satay.jpg" alt="Satay">
+        </div>
+        <div class="divider"></div>
+        <div class="explanation">
+          <h1 class="bradley-hand">Satay</h1>
+          <p> Marinated and grilled meat skewers, usually chicken or beef. They are traditionally served with a rich and creamy peanut sauce, fresh cucumber slices, and raw onions.</p>
+          <div class="buttons">
+            <button onclick="showModal('recipe2')">Recipe</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="transparent-divider"></div>
+      <div class="content">
+        <div class="pattern">
+          <img src="Canai.jpg" alt="Canai">
+        </div>
+        <div class="divider"></div>
+        <div class="explanation">
+          <h1 class="bradley-hand">Roti Canai</h1>
+          <p> A flaky, pan-fried flatbread that is a staple for breakfast or a late-night snack. It's served with various curries, such as dal (lentil curry) or fish curry, for dipping.</p>
+
+          <div class="buttons">
+            <button onclick="showModal('recipe3')">Recipe</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="transparent-divider"></div>
+      <div class="content">
+        <div class="pattern">
+          <img src="Cendol.jpg" alt="Cendol">
+        </div>
+        <div class="divider"></div>
+        <div class="explanation">
+          <h1 class="bradley-hand">Cendol</h1>
+          <p> A popular dessert made with shaved ice, green rice flour jelly, coconut milk, and palm sugar syrup (gula melaka). It's a sweet and refreshing treat, especially in Malaysia's hot climate.</p>
+          <div class="buttons">
+            <button onclick="showModal('recipe4')">Recipe</button>
+          </div>
+        </div>
+      </div>
+
+  <!-- Modals -->
+  <div id="recipeModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('recipe')">&times;</span>
+      <h2>Nasi Lemak Recipe</h2>
+      <p>Here's how to make this delicious Malaysian dish:</p>
+      <p><strong>Ingredients:</strong></p>
+      <ul>
+        <li>1 cup basmati rice</li>
+        <li>1 cup thick coconut milk</li>
+        <li>1 slice of ginger</li>
+        <li>1 knotted pandan leaf</li>
+        <li>A pinch of salt</li>
+      </ul>
+      <p><strong>Instructions:</strong></p>
+      <p>Cook the ingredients</p>
+      <ul>
+        <li>Wash the rice and put it in a rice cooker.</li>
+        <li>Add coconut milk, water, ginger, pandan leaf and salt.</li>
+        <li>Stir well and cook.</li>
+      </ul>
+      <p>Serve</p>
+      <ul>
+        <li>Serve with sambal, fried anchovies, peanuts, cucumber slices, and a hard-boiled egg.</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div id="recipe2Modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('recipe2')">&times;</span>
+       <h2>Satay Recipe</h2>
+      <p>How to cook delicious Satay with peanut sauce:</p>
+      <p><strong>Marinade Ingredients:</strong></p>
+      <ul>
+        <li>500g chicken or beef, cut into small cubes</li>
+        <li>1 tbsp lemongrass, finely minced</li>
+        <li>1 tsp turmeric powder</li>
+        <li>1 tsp coriander powder</li>
+        <li>1 tsp cumin powder</li>
+        <li>1/2 tsp salt</li>
+        <li>1 tbsp sugar</li>
+        <li>2 tbsp oil</li>
+      </ul>
+      <p><strong>Peanut Sauce Ingredients:</strong></p>
+      <ul>
+        <li>200g roasted peanuts, ground</li>
+        <li>1 red chili, minced</li>
+        <li>2 cloves garlic, minced</li>
+        <li>1 tbsp tamarind paste</li>
+        <li>1 tbsp sugar</li>
+        <li>1/2 tsp salt</li>
+        <li>1 cup water</li>
+      </ul>
+      <p><strong>Instructions:</strong></p>
+      <p>Prepare the satay</p>
+      <ul>
+        <li>Mix all marinade ingredients with the meat and let it marinate for at least 2 hours.</li>
+        <li>Thread the marinated meat onto skewers.</li>
+        <li>Grill the skewers on a hot grill or pan until cooked through and slightly charred.</li>
+      </ul>
+      <p>Prepare the peanut sauce</p>
+      <ul>
+        <li>Sauté chili and garlic in a pan. Add ground peanuts, tamarind paste, sugar, and salt.</li>
+        <li>Pour in water and simmer until the sauce thickens.</li>
+      </ul>
+      <p>Serve</p>
+      <ul>
+        <li>Serve the grilled satay skewers hot with the peanut sauce on the side.</li>
+      </ul>
+    </div>
+  </div>
+
+<div id="recipe3Modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('recipe3')">&times;</span>
+        <h2>Roti Canai Recipe</h2>
+        <p>Here's how to make this delicious Malaysian dish:</p>
+        <p><strong>Ingredients:</strong></p>
+        <ul>
+            <li>2 cups all-purpose flour</li>
+            <li>1 egg, beaten</li>
+            <li>1 teaspoon sugar</li>
+            <li>1/2 teaspoon salt</li>
+            <li>1/2 cup water</li>
+            <li>1/4 cup ghee or margarine, for kneading and cooking</li>
+            <li>Dal (lentil curry), for serving</li>
+        </ul>
+        <p><strong>Instructions:</strong></p>
+        <p>Prepare the dough</p>
+        <ul>
+            <li>In a large bowl, combine the flour, salt, and sugar.</li>
+            <li>Make a well in the center and add the beaten egg and water. Mix until a rough dough forms.</li>
+            <li>Knead the dough on a floured surface for about 10 minutes until smooth and elastic.</li>
+            <li>Divide the dough into small balls and coat each with melted ghee or margarine. Let rest for at least 2 hours, preferably overnight.</li>
+        </ul>
+        <p>Cook the Roti Canai</p>
+        <ul>
+            <li>Flatten a dough ball and brush with ghee. Stretch it until it's paper-thin.</li>
+            <li>Fold the sides inwards to create a rectangle, then roll it up and coil it into a spiral. Flatten the spiral with your palm.</li>
+            <li>Cook on a heated, lightly oiled griddle for 2-3 minutes on each side until golden brown and crispy.</li>
+        </ul>
+        <p>Serve</p>
+        <ul>
+            <li>To make it extra fluffy, `clap` the cooked roti between your hands. Serve hot with a side of dal.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Cendol Recipe Modal -->
+<div id="recipe4Modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('recipe4')">&times;</span>
+        <h2>Cendol Recipe</h2>
+        <p>Here's how to make this refreshing Malaysian dessert:</p>
+        <p><strong>Ingredients:</strong></p>
+        <ul>
+            <li>1 cup rice flour</li>
+            <li>1/2 cup sago flour</li>
+            <li>1/2 cup pandan juice</li>
+            <li>1/2 teaspoon of lye water (optional)</li>
+            <li>2 cups shaved ice</li>
+            <li>2 cups coconut milk</li>
+            <li>1/2 cup Gula Melaka (palm sugar), melted and thickened</li>
+            <li>Red beans (optional)</li>
+        </ul>
+        <p><strong>Instructions:</strong></p>
+        <p>Make the Cendol 'worms'</p>
+        <ul>
+            <li>Combine rice flour, sago flour, pandan juice, and lye water in a pot. Cook over low heat, stirring constantly until a thick, gooey paste forms.</li>
+            <li>Press the warm paste through a cendol press or a colander with large holes directly into a bowl of cold water. The paste will form short, green strands.</li>
+        </ul>
+        <p>Assemble the Cendol</p>
+        <ul>
+            <li>In a bowl, add a generous amount of shaved ice.</li>
+            <li>Top with the fresh cendol `worms`.</li>
+            <li>Drizzle with coconut milk and Gula Melaka syrup.</li>
+            <li>Add red beans if desired.</li>
+        </ul>
+        <p>Serve</p>
+        <ul>
+            <li>Serve immediately to enjoy the refreshing combination of sweet, salty, and creamy flavors.</li>
+        </ul>
+    </div>
+</div>
+
+  <script>
+    function showModal(type) {
+      document.getElementById(type + 'Modal').style.display = 'flex';
+    }
+
+    function closeModal(type) {
+      document.getElementById(type + 'Modal').style.display = 'none';
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        document.getElementById('recipeModal').style.display = 'none';
+        document.getElementById('recipe2Modal').style.display = 'none';
+        document.getElementById('recipe3Modal').style.display = 'none';
+        document.getElementById('recipe4Modal').style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Membership</title>
+    <!-- Use the Inter font for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Load Tailwind CSS for easy styling and responsiveness -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            padding: 0;
+            display: flex; /* Flexbox for desktop layout */
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+       /* Left Navigation */
+    .sidebar {
+      width: 225px;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      color: white;
+      padding: 30px 0;
+      box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo span {
+      color: #ffd700;
+    }
+
+    .logo i {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 5px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      padding: 15px 30px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    nav ul li a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 4px solid #ffd700;
+    }
+
+    nav ul li a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      color: white;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      padding: 10px 20px;
+      cursor: pointer;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1100;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Responsive Design for Mobile */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 50px;
+        transform: translateX(-100%);
+        z-index: 1000;
+        overflow-y: auto;
+
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 60px 10px 20px;
+      }
+      .main-content-wrapper {
+        margin-left: 0;
+        width: 100%;
+        padding: 60px 10px 20px;
+        box-sizing: border-box;
+      }
+
+      .container {
+        min-height: auto;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pattern img {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .divider {
+        display: none;
+      }
+
+      .explanation {
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Horizontal Navigation in Mobile Mode */
+      nav ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+      }
+
+      nav ul li {
+        margin-bottom: 0;
+      }
+
+      nav ul li a {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+
+      nav ul li a:hover {
+        padding-left: 15px; /* Override desktop hover effect */
+      }
+
+      nav ul li a.active {
+        border-left: none;
+        border-bottom: 4px solid #ffd700;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+    }
+    </style>
+</head>
+
+<body>
+     <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Left Navigation -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <h1>
+        <i class="fas fa-utensils"></i>
+        Asia<span>Street Food</span>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="navigation.html"><i class="fas fa-compass"></i> Navigation</a></li>
+        <li><a href="news.html"><i class="fas fa-newspaper"></i> News</a></li>
+        <li><a href="membership.html"><i class="fas fa-user-plus"></i> Membership</a></li>
+
+      </ul>
+    </nav>
+  </div>
+
+    <!-- This is the new container for the main content to handle the spacing -->
+    <div class="main-content-wrapper p-4 pt-20 md:ml-[225px] md:pt-4 flex justify-center items-center min-h-screen w-full">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-4xl md:max-w-full md:rounded-none md:shadow-none">
+            <form class="space-y-6" id="addressForm">
+                <!-- First Name and Last Name fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- First Name Field -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700" for="first-name">First Name</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input class="block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="first-name" name="first-name" placeholder="John" required="" type="text"/>
+                            <p class="mt-1 text-sm text-red-600 hidden" id="first-name-feedback">First name cannot be empty.</p>
+                        </div>
+                    </div>
+                    <!-- Last Name Field -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700" for="last-name">Last Name</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input class="block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="last-name" name="last-name" placeholder="Doe" required="" type="text"/>
+                            <p class="mt-1 text-sm text-red-600 hidden" id="last-name-feedback">Last name cannot be empty.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Email and Password fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Email Field -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700" for="email">Email</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <input class="block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="email" name="email" placeholder="you@example.com" required="" type="email"/>
+                            <p class="mt-1 text-sm text-red-600 hidden" id="email-feedback">Please provide a valid email.</p>
+                        </div>
+                    </div>
+                    <!-- Password Field -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700" for="password">Password</label>
+                        <div class="mt-1 relative">
+                            <input class="peer block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="password" name="password" required="" type="password"/>
+                            <button id="show-password-toggle" type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                            <p class="mt-1 text-sm text-red-600 hidden" id="password-feedback">Please provide a valid password.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Address fields -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="address">Address</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <input class="block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="address" name="address" placeholder="No. 88, Lorong Berjaya" required="" type="text"/>
+                        <p class="mt-1 text-sm text-red-600 hidden" id="address-feedback">Please provide a valid address.</p>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="address2">Address 2</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <input class="block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="address2" name="address2" placeholder="Taman Cemerlang" type="text"/>
+                        <p class="mt-1 text-sm text-red-600 hidden" id="address2-feedback">Please provide a valid address.</p>
+                    </div>
+                </div>
+                <!-- City, State, and Zip fields with validation -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- City Field -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700" for="city">City</label>
+                        <div class="mt-1 relative">
+                            <input class="peer block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="city" name="city" placeholder="Kampar" required="" type="text"/>
+                            <p class="mt-1 text-sm text-red-600 hidden" id="city-feedback">Please provide a valid city.</p>
+                        </div>
+                    </div>
+                    <!-- State Field (Dropdown) -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700" for="state">State</label>
+                        <div class="mt-1 relative">
+                            <select class="peer block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="state" name="state" required="">
+                                <option value="">Choose...</option>
+                                <option value="Perak">Perak</option>
+                                <option value="Selangor">Selangor</option>
+                                <option value="Johor">Johor</option>
+                                <option value="Kedah">Kedah</option>
+                                <option value="Kelantan">Kelantan</option>
+                                <option value="Malacca">Malacca</option>
+                                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                <option value="Pahang">Pahang</option>
+                                <option value="Penang">Penang</option>
+                                <option value="Sabah">Sabah</option>
+                                <option value="Sarawak">Sarawak</option>
+                                <option value="Terengganu">Terengganu</option>
+                                <option value="Kuala Lumpur">Kuala Lumpur</option>
+                                <option value="Labuan">Labuan</option>
+                                <option value="Putrajaya">Putrajaya</option>
+                            </select>
+                            <p class="mt-1 text-sm text-red-600 hidden" id="state-feedback">Please select a valid state.</p>
+                        </div>
+                    </div>
+                    <!-- Zip Field -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700" for="zip">ZIP Code</label>
+                        <div class="mt-1 relative">
+                            <input class="peer block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:ring-blue-500 focus:border-blue-500" id="zip" name="zip" placeholder="12345" required="" type="text"/>
+                            <p class="mt-1 text-sm text-red-600 hidden" id="zip-feedback">Please provide a valid ZIP code.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Checkbox and Submit Button -->
+                <div class="flex items-center space-x-2">
+                    <input class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" id="newsletter" name="newsletter" type="checkbox"/>
+                    <label class="text-sm font-medium text-gray-700" for="newsletter">Sign-up for newsletter</label>
+                </div>
+                <!-- Submit button -->
+                <div class="flex justify-start">
+                    <button class="w-24 py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out" type="submit">
+                        Sign in
+                    </button>
+                </div>
+                <!-- Validation message box -->
+                <div class="mt-4 p-3 hidden text-center rounded-lg" id="validation-message-box"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        function toggleSidebar() {
+              document.getElementById('sidebar').classList.toggle('active');
+            }
+
+        $(document).ready(function() {
+          
+            // Function to validate a field and update its feedback
+            function validateField(inputElement, feedbackElement, isValidCondition, errorMessage) {
+                if (isValidCondition) {
+                    feedbackElement.addClass('hidden').removeClass('text-red-600');
+                    inputElement.removeClass('border-red-500');
+                    return true;
+                } else {
+                    feedbackElement.text(errorMessage).removeClass('hidden').addClass('text-red-600');
+                    inputElement.addClass('border-red-500');
+                    return false;
+                }
+            }
+            
+            // Password toggle functionality
+            $('#show-password-toggle').on('click', function() {
+                const passwordInput = $('#password');
+                const passwordIcon = $(this).find('i');
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    passwordIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    passwordIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+                }
+            });
+
+            // Real-time validation listeners for name fields
+            $('#first-name').on('input', function() {
+                const isValid = $(this).val().trim() !== '';
+                validateField($(this), $('#first-name-feedback'), isValid, 'First name cannot be empty.');
+            });
+
+            // Real-time validation listeners for other fields
+            $('#email').on('input', function() {
+                const isValid = $(this).val().includes('@') && $(this).val().toLowerCase().includes('.com');
+                validateField($(this), $('#email-feedback'), isValid, 'Please provide a valid email.');
+            });
+
+            $('#password').on('input', function() {
+                const passwordValue = $(this).val();
+                const hasUppercase = /[A-Z]/.test(passwordValue);
+                const hasLowercase = /[a-z]/.test(passwordValue);
+                const hasNumber = /\d/.test(passwordValue);
+                const isLongEnough = passwordValue.length >= 7;
+                const isPasswordValid = validateField($(this), $('#password-feedback'), hasUppercase && hasLowercase && hasNumber && isLongEnough, 'Must be at least 7 characters. Include one uppercase, one lowercase, and one number.');
+            });
+
+            $('#address').on('input', function() {
+                const hasCharactersAndNumbers = /[a-zA-Z]/.test($(this).val()) && /[0-9]/.test($(this).val());
+                validateField($(this), $('#address-feedback'), hasCharactersAndNumbers, 'Address must include characters and numbers.');
+            });
+
+            $('#address2').on('input', function() {
+                const isValid = $(this).val().toLowerCase().includes('taman');
+                validateField($(this), $('#address2-feedback'), isValid, 'Please provide a valid address.');
+            });
+
+            $('#city').on('input', function() {
+                const onlyCharacters = /^[a-zA-Z\s]+$/.test($(this).val());
+                validateField($(this), $('#city-feedback'), onlyCharacters, 'City can only contain characters.');
+            });
+
+            $('#state').on('change', function() {
+                const isValid = $(this).val() !== '';
+                validateField($(this), $('#state-feedback'), isValid, 'Please select a state.');
+            });
+
+            $('#zip').on('input', function() {
+                const zipPattern = /^\d{5}$/;
+                const isValid = zipPattern.test($(this).val());
+                validateField($(this), $('#zip-feedback'), isValid, 'Please provide a valid ZIP code.');
+            });
+
+            // Form submission listener for the final check
+            $('#addressForm').on('submit', function(event) {
+                event.preventDefault();
+
+                // Validate all fields on submit
+                const isFirstNameValid = validateField($('#first-name'), $('#first-name-feedback'), $('#first-name').val().trim() !== '', 'First name cannot be empty.');
+                const isEmailValid = validateField($('#email'), $('#email-feedback'), $('#email').val().includes('@') && $('#email').val().toLowerCase().includes('.com'), 'Please provide a valid email.');
+
+                const passwordValue = $('#password').val();
+                const hasUppercase = /[A-Z]/.test(passwordValue);
+                const hasLowercase = /[a-z]/.test(passwordValue);
+                const hasNumber = /\d/.test(passwordValue);
+                const isLongEnough = passwordValue.length >= 7;
+                const isPasswordValid = validateField($('#password'), $('#password-feedback'), hasUppercase && hasLowercase && hasNumber && isLongEnough, 'Must be at least 7 characters. Include one uppercase, one lowercase, and one number.');
+
+                const hasCharactersAndNumbers = /[a-zA-Z]/.test($('#address').val()) && /[0-9]/.test($('#address').val());
+                const isAddressValid = validateField($('#address'), $('#address-feedback'), hasCharactersAndNumbers, 'Address must include characters and numbers.');
+
+                const isAddress2Valid = validateField($('#address2'), $('#address2-feedback'), $('#address2').val().toLowerCase().includes('taman'), 'Please provide a valid address.');
+
+                const onlyCharacters = /^[a-zA-Z\s]+$/.test($('#city').val());
+                const isCityValid = validateField($('#city'), $('#city-feedback'), onlyCharacters, 'City can only contain characters.');
+
+                const isStateValid = validateField($('#state'), $('#state-feedback'), $('#state').val() !== '', 'Please select a state.');
+
+                const zipPattern = /^\d{5}$/;
+                const isZipValid = validateField($('#zip'), $('#zip-feedback'), zipPattern.test($('#zip').val()), 'Please provide a valid ZIP code.');
+
+                const isFormValid = isFirstNameValid && isEmailValid && isPasswordValid && isAddressValid && isAddress2Valid && isCityValid && isStateValid && isZipValid;
+
+                if (isFormValid) {
+                    $('#validation-message-box').removeClass('p-3 bg-red-200 text-red-800').addClass('hidden');
+     window.location.href = 'home.html';
+                } else {
+                    $('#validation-message-box').text('Please fix the errors above.').removeClass('hidden').addClass('mt-4 p-3 bg-red-200 text-red-800 rounded-lg');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

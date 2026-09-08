@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style type="text/css">
+body {
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+    /* Left Navigation */
+    .sidebar {
+      width: 225px;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      color: white;
+      padding: 30px 0;
+      box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo span {
+      color: #ffd700;
+    }
+
+    .logo i {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 5px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      padding: 15px 30px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    nav ul li a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 4px solid #ffd700;
+    }
+
+    nav ul li a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      color: white;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      padding: 10px 20px;
+      cursor: pointer;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1100;
+      width: 100%;
+      box-sizing: border-box;
+    }
+        
+/* Main content area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+	    align-items: center;
+            padding: 20px;
+            background-color: #f5f5f5;
+	    margin-left: 225px;
+        }
+
+h1{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin: 0 0 20px 0;
+  font-size: 2em;
+}
+
+	.map-container {
+            position: relative;
+            display: flex;
+	    max-width: 100%; /* Use a percentage for a fluid width */
+	    height: auto;
+	 }
+	
+     
+        .map-container img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .map-button {
+            position: absolute;
+	    background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+            padding: 50px 100px;
+	    min-width: 100px
+            text-align: center;
+	    text-decoration: none;
+	    transition: transform 0.3s ease;
+        }
+
+       
+        .map-button:hover {
+            transform: scale(1.3); 
+        }
+
+      
+        .button-korea {
+            top: 15%;
+            left: 55%;
+        }
+
+        .button-japan {
+            top: 60%; 
+            left: 15%; 
+        }
+
+        .button-china {
+            top: 15%;
+            left: 15%; 
+        }
+	.button-malaysia {
+            top: 60%; 
+            left: 55%;
+            padding: 50px 75px;
+
+        }
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 40px;
+        transform: translateX(-100%);
+        z-index: 1000;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+        height: auto;
+        padding-bottom: 20px;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .container {
+        min-height: auto;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pattern img {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .divider {
+        display: none;
+      }
+
+      .explanation {
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Horizontal Navigation in Mobile Mode */
+      nav ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+      }
+
+      nav ul li {
+        margin-bottom: 0;
+      }
+
+      nav ul li a {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+
+      nav ul li a:hover {
+        padding-left: 15px; /* Override desktop hover effect */
+      }
+
+      nav ul li a.active {
+        border-left: none;
+        border-bottom: 4px solid #ffd700;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+    }
+            .main-content {
+                margin-left: 0;
+                padding-top: 50px;
+		height: auto;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                height: 80px;
+            }
+
+            .map-container {
+                width: 100%;
+		height: auto;
+            }
+
+            .map-container img {
+                max-width: 768px;
+            }
+
+            .map-button {
+                font-size: 24px;
+                padding: 20px 40px;
+                min-width: 80px;
+            }
+
+            .button-korea {
+                top: 15%;
+                left: 55%;
+            }
+
+            .button-japan {
+                top: 60%;
+                left: 15%;
+            }
+
+            .button-china {
+                top: 15%;
+                left: 15%;
+            }
+
+            .button-malaysia {
+                top: 60%;
+                left: 55%;
+                padding: 20px 30px;
+            }
+        }
+
+        /* Small screens (e.g., phones) */
+        @media (max-width: 480px) {
+            .sidebar {
+                padding: 15px 0;
+            }
+
+            .logo h1 {
+                font-size: 20px;
+            }
+
+            .logo i {
+                font-size: 30px;
+            }
+
+            nav ul {
+                gap: 5px;
+            }
+
+            nav ul li a {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+
+            h1 {
+                font-size: 1.2em;
+                height: 60px;
+            }
+
+            .map-button {
+                font-size: 18px;
+                padding: 15px 30px;
+                min-width: 60px;
+            }
+        }
+
+</style>
+</head>
+<body>
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Left Navigation -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <h1>
+        <i class="fas fa-utensils"></i>
+        Aisa<span>Street Food</span>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+	<li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="navigation.html"><i class="fas fa-compass"></i> Navigation</a></li>
+        <li><a href="news.html"><i class="fas fa-newspaper"></i> News</a></li>
+        <li><a href="membership.html"><i class="fas fa-user-plus"></i> Membership</a></li>
+      </ul>
+    </nav>
+  </div>
+
+<div class="main-content ">
+        <h1><i>Asian Street Food Map</i></h1>
+
+    <main>
+        <section>
+        <div class="map-container">
+           <img src="map.jpg" alt="Map">
+                <a href="korea.html" class="map-button button-korea"><i>Korea</i></a>
+		<a href="japan.html" class="map-button button-japan"><i>Japan</i></a>
+  		<a href="ChineseStreetFood.html" class="map-button button-china"><i>China</i></a>
+		<a href="malaysia.html" class="map-button button-malaysia"><i>Malaysia</i></a>
+	</div>
+        </section>
+    </main>
+</div>
+
+<script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+</script>
+</body>
+</html>

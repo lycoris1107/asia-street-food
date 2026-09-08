@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asia Street Food — Home</title>
+
+  <!-- Icons + jQuery -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex; /* Desktop layout */
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
+    /* Left Navigation */
+    .sidebar {
+      width: 225px;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      color: white;
+      padding: 30px 0;
+      box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo span {
+      color: #ffd700;
+    }
+
+    .logo i {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 5px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      padding: 15px 30px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    nav ul li a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 4px solid #ffd700;
+    }
+
+    nav ul li a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      color: white;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      padding: 10px 20px;
+      cursor: pointer;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1100;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+
+    /* Main content wrapper */
+    .main-content-wrapper {
+      margin-left: 225px; /* create space for sidebar */
+      padding: 20px;
+      width: calc(100% - 225px);
+    }
+
+    /* Sections */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("herosession.jpg");
+      color: #fff;
+      padding: 60px 30px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .hero h2 {
+      font-size: 32px;
+      margin: 0;
+    }
+    .welcome {
+      margin-top: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffd700;
+    }
+
+    .section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .section h3 {
+      margin-top: 0;
+      color: #e67e22;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+    .grid-4 {
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    }
+    .country-card {
+      background:#fff;
+      border-radius:8px;
+      padding:10px;
+      border:1px solid #efefef;
+    }
+    .country-card img {
+      width:100%;
+      height:140px;
+      object-fit:cover;
+      border-radius:6px;
+    }
+    .muted {      
+      color: #fff;
+      font-size:30px; }
+
+    .muted2 {      
+      color: black;
+      font-size:30px; }
+
+    .social a { margin-right:12px; font-size:22px; color:#e67e22; }
+
+    /* Cookie bar */
+    .cookie-bar {
+      position: fixed;
+      left: 241px; right: 16px; bottom: 16px;
+      background: #111; color: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      display: none;
+      z-index: 999;
+    }
+  
+   
+    .cookie-bar button {
+      margin-left: 10px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 0;
+      cursor: pointer;
+    }
+    .accept { background: #e67e22; color: #fff; }
+    .decline { background: #555; color: #fff; }
+
+    /* Responsive Design for Mobile */
+    @media (max-width: 768px) {
+
+      .cookie-bar {
+        left: 16px;
+        right: 16px;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        transform: translateX(-100%);
+        z-index: 1000;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 60px 10px 20px;
+      }
+      .main-content-wrapper {
+        margin-left: 0;
+        width: 100%;
+        padding: 60px 10px 20px;
+        box-sizing: border-box;
+      }
+
+      .container {
+        min-height: auto;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pattern img {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .divider {
+        display: none;
+      }
+
+      .explanation {
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Horizontal Navigation in Mobile Mode */
+      nav ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+      }
+
+      nav ul li {
+        margin-bottom: 0;
+      }
+
+      nav ul li a {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+
+      nav ul li a:hover {
+        padding-left: 15px; /* Override desktop hover effect */
+      }
+
+      nav ul li a.active {
+        border-left: none;
+        border-bottom: 4px solid #ffd700;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Left Navigation -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <h1>
+        <i class="fas fa-utensils"></i>
+        Asia<span>Street Food</span>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="navigation.html"><i class="fas fa-compass"></i> Navigation</a></li>
+        <li><a href="news.html"><i class="fas fa-newspaper"></i> News</a></li>
+        <li><a href="membership.html"><i class="fas fa-user-plus"></i> Membership</a></li>
+      </ul>
+    </nav>
+  </div>
+  <!-- Main -->
+  <main class="main-content-wrapper">
+    <!-- HERO -->
+    <section class="hero">
+      <h2>Welcome to Asia Street Food</h2>
+      <div id="welcomeMsg" class="welcome"></div>
+      <p class="muted">A collection of Asian street food — learn, taste, and preserve.</p>
+    </section>
+
+    <!-- Aim & Goal -->
+    <section class="section">
+      <h3><i class="fas fa-bullseye"></i> Aim & Goal</h3>
+      <p>We aim to celebrate and preserve the vibrant street food culture of Asia, giving locals and tourists a taste of authentic traditions. Our goal is to connect food lovers with unique experiences while promoting cultural exchange and community growth.</p>
+    </section>
+
+    <!-- Featured Countries -->
+    <section class="section">
+      <h3><i class="fas fa-map-marker-alt"></i> Featured Street Food Countries</h3>
+      <div class="grid grid-4">
+        <div class="country-card">
+          <img src="Takoyaki.jpg" alt="Takoyaki">
+          <h4>Japan</h4>
+          <p class="muted2">Takoyaki</p>
+        </div>
+        <div class="country-card">
+          <img src="tteok.jpeg" alt="tteok">
+          <h4>Korea</h4>
+          <p class="muted2">Tteokbokki</p>
+        </div>
+        <div class="country-card">
+          <img src="Roujiamo.jpg" alt="Roujiamo">
+          <h4>China</h4>
+          <p class="muted2">Roujiamo</p>
+        </div>
+        <div class="country-card">
+          <img src="satay.jpg" alt="satay">
+          <h4>Malaysia</h4>
+          <p class="muted2">Satay</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section">
+      <h3><i class="fas fa-envelope"></i> Contact Us</h3>
+      <p>Email: <a href="mailto:support@kitafoodfest.com">support@kitafoodfest.com</a></p>
+      <p>Phone: <a href="tel:+60123456789">+60 123 456 789</a></p>
+      <div class="social">
+        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Cookie consent bar -->
+  <div id="cookieBar" class="cookie-bar">
+    <span>We use cookies to personalize your experience. Accept to allow us to send updated news after registration.</span>
+    <button id="acceptCookies" class="accept">Accept</button>
+    <button id="declineCookies" class="decline">Decline</button>
+  </div>
+
+  <script>
+    // Cookie helpers
+    function setCookie(name,value,days){
+      let d=new Date();
+      d.setTime(d.getTime()+days*24*60*60*1000);
+      document.cookie = name+"="+encodeURIComponent(value)+";expires="+d.toUTCString()+";path=/";
+    }
+    function getCookie(name){
+      let m=document.cookie.match('(^|;)\\s*'+name+'=([^;]*)');
+      return m?decodeURIComponent(m[2]):null;
+    }
+
+    $(function(){
+      // Show cookie bar if no consent saved
+      if(!getCookie("consent")){
+        $("#cookieBar").fadeIn();
+      }
+
+      $("#acceptCookies").on("click", function(){
+        setCookie("consent","true",365);
+        $("#cookieBar").fadeOut();
+      });
+
+      $("#declineCookies").on("click", function(){
+        setCookie("consent","false",365);
+        $("#cookieBar").fadeOut();
+      });
+
+      // If cookies accepted and memberName exists, show welcome
+      if(getCookie("consent")==="true"){
+        const memberName = getCookie("memberName");
+        if(memberName){
+          $("#welcomeMsg").text("Welcome back, " + memberName + "!");
+        }
+      }
+    });
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+  </script>
+</body>
+</html>

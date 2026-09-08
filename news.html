@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Events</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #fffaf5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Left Navigation */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(to bottom, #d35400, #e67e22);
+            color: white;
+            padding: 30px;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: #ffd700;
+        }
+        
+        .logo i {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        nav ul li {
+            margin-bottom: 5px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 15px 30px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding-left: 35px;
+        }
+        
+        nav ul li a.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid #ffd700;
+        }
+        
+        nav ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            color: white;
+            background: linear-gradient(to bottom, #d35400, #e67e22);
+            padding: 10px 20px;
+            cursor: pointer;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1100;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 255px;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("herosession.jpg");
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+        
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Location Section */
+        .location-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #e67e22;
+        }
+        
+        .location-title {
+            font-size: 24px;
+            color: #d35400;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        
+        .location-title i {
+            margin-right: 10px;
+            color: #ffd700;
+        }
+        
+        .toggle-icon {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+        
+        .festival-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .festival-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .festival-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .festival-card {
+            background: #fffaf0;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+            border-bottom: 3px solid #e67e22;
+            cursor: pointer;
+        }
+        
+        .festival-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .festival-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #d35400;
+        }
+        
+        .festival-card p {
+            color: #666;
+        }
+        
+        .festival-card.active {
+            background: #ffe4c4;
+            border-bottom: 3px solid #d35400;
+        }
+        
+        .festival-details-container {
+            flex: 2;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .festival-details {
+            display: none;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .festival-details h4 {
+            color: #d35400;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .festival-details p {
+            margin-bottom: 15px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .festival-content-container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        .festival-text {
+            flex: 2;
+        }
+        
+        .image-container {
+            flex: 1;
+            min-width: 200px;
+            max-width: 400px;
+        }
+        
+        .promotion-poster {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 5px solid #ffd700;
+        }
+        
+        .promotion-poster img {
+            width: 100%;
+            height: auto;
+            display: block;
+            background: #eee;
+            min-height: 200px;
+        }
+        
+        .poster-caption {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .show-details {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .expand-button {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: 500;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .expand-button:hover {
+            background: #d35400;
+        }
+        
+        .social-sharing {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 15px;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        .social-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .social-btn i {
+            margin-right: 5px;
+        }
+        
+        .facebook-btn {
+            background-color: #3b5998;
+        }
+        
+        .x-btn {
+            background-color: #000000;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25d366;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #e67e22;
+        }
+        
+        .loading i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            animation: spin 1s infinite linear;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #c62828;
+        }
+        
+        /* Responsive Design for Mobile View */
+        @media (max-width: 768px) {
+            body {
+                display: block;
+                padding-top: 60px;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px 10px;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                top: 50px;
+                transform: translateX(-100%);
+                z-index: 1000;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .sidebar .logo {
+                margin-bottom: 20px;
+            }
+            
+            .sidebar .logo h1 {
+                font-size: 18px;
+            }
+            
+            .sidebar .logo i {
+                font-size: 24px;
+            }
+            
+            nav ul {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px 0;
+            }
+            
+            nav ul li {
+                margin-bottom: 0;
+            }
+            
+            nav ul li a {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            nav ul li a:hover {
+                padding-left: 15px;
+            }
+            
+            nav ul li a.active {
+                border-left: none;
+                border-bottom: 4px solid #ffd700;
+            }
+            
+            .container {
+                padding: 0 10px;
+            }
+            
+            .hero h2 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .location-title {
+                font-size: 22px;
+            }
+            
+            .festival-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .social-sharing {
+                flex-direction: column;
+            }
+            
+            .festival-container {
+                flex-direction: column;
+            }
+            
+            .festival-content-container {
+                flex-direction: column;
+            }
+            
+            .image-container {
+                max-width: 100%;
+                order: -1;
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 40px 15px;
+            }
+            
+            .hero h2 {
+                font-size: 24px;
+            }
+            
+            .location-title {
+                font-size: 20px;
+            }
+            
+            .festival-card {
+                padding: 15px;
+            }
+            
+            .festival-details {
+                padding: 20px;
+            }
+            
+            .festival-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+                flex: 1;
+                max-width: 250px;
+            }
+            
+            .festival-details-container {
+                flex: 2;
+                max-width: 250px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .festival-text {
+                max-width: 250px;
+                width: 100%;
+                word-wrap: break-word;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="hamburger" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Left Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>
+                <i class="fas fa-utensils"></i>
+                Asia<span>Street Food</span>
+            </h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="navigation.html"><i class="fas fa-compass"></i> Navigation</a></li>
+        <li><a href="news.html"><i class="fas fa-newspaper"></i> News</a></li>
+        <li><a href="membership.html"><i class="fas fa-user-plus"></i> Membership</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h2>Upcoming Events Gallery</h2>
+                <p>Journey through global flavors at our upcoming food festivals. Taste the world, all in one place.</p>
+            </section>
+
+            <!-- Events Section -->
+            <section class="events-section">
+                <!-- Korea Festivals Section -->
+                <div class="location-section">
+                    <div class="location-title" data-section="korea">
+                        <div>
+                            <i class="fas fa-city"></i> Korea
+                        </div>
+                        <div class="toggle-icon">▼</div>
+                    </div>
+                    
+                    <div id="korea" class="festival-content">
+                        <p>Click on any upcoming food festival in Korea to view its details. You can toggle each festival individually.</p>
+                        
+                        <button class="expand-button toggle-all-button" data-section="korea">
+                            <i class="fas fa-chevron-down"></i> Show All Festival Details
+                        </button>
+                        
+                        <div class="festival-container">  
+                            <div class="festival-grid"> 
+                                <div class="festival-card" data-festival="insam">
+                                    <h3>Geumsan World K-Insam Festival</h3>
+                                </div>
+                            </div>
+                            
+                            <div class="festival-details-container">
+                                <div id="insam" class="festival-details">
+                                    <div class="loading">
+                                        <i class="fas fa-spinner"></i>
+                                        <p>Loading festival details...</p>
+                                    </div>
+                                </div>         
+                            </div>
+                        </div>
+                    </div>
+                </div>          
+
+                <!-- Japan Festivals Section -->
+                <div class="location-section">
+                    <div class="location-title" data-section="japan">
+                        <div>
+                            <i class="fas fa-city"></i> Japan
+                        </div>
+                        <div class="toggle-icon">▼</div>
+                    </div>
+                    
+                    <div id="japan" class="festival-content">
+                        <p>Click on any upcoming food festival in Japan to view its details. You can toggle each festival individually.</p>
+                        
+                        <button class="expand-button toggle-all-button" data-section="japan">
+                            <i class="fas fa-chevron-down"></i> Show All Festival Details
+                        </button>
+                        
+                        <div class="festival-container">  
+                            <div class="festival-grid">                          
+                                <div class="festival-card" data-festival="saf">
+                                    <h3>Sapporo Autumn Fest</h3>
+                                </div>
+                                <div class="festival-card" data-festival="gion">
+                                    <h3>Gion Matsuri</h3>
+                                </div>
+                            </div>
+                            
+                            <div class="festival-details-container">
+                                <div id="saf" class="festival-details">
+                                    <div class="loading">
+                                        <i class="fas fa-spinner"></i>
+                                        <p>Loading festival details...</p>
+                                    </div>
+                                </div>
+                                
+                                <div id="gion" class="festival-details">
+                                    <div class="loading">
+                                        <i class="fas fa-spinner"></i>
+                                        <p>Loading festival details...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Malaysia Festivals Section -->
+                <div class="location-section">
+                    <div class="location-title" data-section="malaysia">
+                        <div>
+                            <i class="fas fa-city"></i> Malaysia
+                        </div>
+                        <div class="toggle-icon">▼</div>
+                    </div>
+                    
+                    <div id="malaysia" class="festival-content">
+                        <p>Click on any upcoming food festival in Malaysia to view its details. You can toggle each festival individually.</p>
+                        
+                        <button class="expand-button toggle-all-button" data-section="malaysia">
+                            <i class="fas fa-chevron-down"></i> Show All Festival Details
+                        </button>
+                        
+                        <div class="festival-container">  
+                            <div class="festival-grid">                          
+                                <div class="festival-card" data-festival="havoc">
+                                    <h3>HAVOC MERDEKA 2025</h3>
+                                </div>
+                            </div>
+                            
+                            <div class="festival-details-container">
+                                <div id="havoc" class="festival-details">
+                                    <div class="loading">
+                                        <i class="fas fa-spinner"></i>
+                                        <p>Loading festival details...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                                                    
+            </section>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function() {
+        // Mobile menu toggle
+        function toggleSidebar() {
+            $('#sidebar').toggleClass('active');
+        }
+
+        $('.hamburger').on('click', toggleSidebar);
+
+        // Close menu when clicking outside
+        $(document).on('click', function(e) {
+            if ($('#sidebar').hasClass('active') && 
+                !$(e.target).closest('#sidebar').length && 
+                !$(e.target).closest('.hamburger').length) {
+                $('#sidebar').removeClass('active');
+            }
+        });
+
+        // Initialize sections to be collapsed by default
+        const sectionsToHide = ['korea', 'japan', 'malaysia'];
+        
+        sectionsToHide.forEach(sectionId => {
+            $('#' + sectionId).hide();
+        });
+        
+        // Add collapsed class to all titles
+        $('.location-title').addClass('collapsed');
+        
+        // Add event listeners for section toggles
+        $('.location-title[data-section]').on('click', function() {
+            const sectionId = $(this).data('section');
+            const section = $('#' + sectionId);
+            
+            if (section.is(':hidden')) {
+                section.show();
+                $(this).addClass('expanded').removeClass('collapsed');
+            } else {
+                section.hide();
+                $(this).addClass('collapsed').removeClass('expanded');
+            }
+        });
+        
+        // Add event listeners for festival toggles
+        $('.festival-card[data-festival]').on('click', function() {
+            const festivalId = $(this).data('festival');
+            const festivalDetails = $('#' + festivalId);
+            
+            // If details haven't been loaded yet, fetch them
+            if (festivalDetails.find('.loading').length) {
+                fetchFestivalDetails(festivalId);
+            }
+            
+            // Toggle the clicked festival
+            if (festivalDetails.hasClass('show-details')) {
+                festivalDetails.removeClass('show-details');
+                $(this).removeClass('active');
+            } else {
+                festivalDetails.addClass('show-details');
+                $(this).addClass('active');
+            }
+            
+            // Update the toggle all button text for the parent section
+            const parentSection = $(this).closest('.festival-content');
+            updateToggleAllButton(parentSection);
+        });
+        
+        // Add event listeners for toggle all buttons
+        $('.toggle-all-button').on('click', function() {
+            const sectionId = $(this).data('section');
+            const parentSection = $('#' + sectionId);
+            
+            const allFestivals = parentSection.find('.festival-details');
+            const allCards = parentSection.find('.festival-card');
+            
+            const allHidden = allFestivals.toArray().every(festival => {
+                return !$(festival).hasClass('show-details');
+            });
+            
+            if (allHidden) {
+                // Show all festivals in this section
+                allFestivals.each(function() {
+                    // If details haven't been loaded yet, fetch them
+                    if ($(this).find('.loading').length) {
+                        const festivalId = $(this).attr('id');
+                        fetchFestivalDetails(festivalId);
+                    }
+                    $(this).addClass('show-details');
+                });
+                allCards.addClass('active');
+                $(this).html('<i class="fas fa-chevron-up"></i> Hide All Festival Details');
+            } else {
+                // Hide all festivals in this section
+                allFestivals.removeClass('show-details');
+                allCards.removeClass('active');
+                $(this).html('<i class="fas fa-chevron-down"></i> Show All Festival Details');
+            }
+        });
+        
+        // Helper function to update toggle all button text for a specific section
+        function updateToggleAllButton(section) {
+            const allFestivals = section.find('.festival-details');
+            const button = section.find('.toggle-all-button');
+            
+            const allHidden = allFestivals.toArray().every(festival => {
+                return !$(festival).hasClass('show-details');
+            });
+            
+            const allShown = allFestivals.toArray().every(festival => {
+                return $(this).hasClass('show-details');
+            });
+            
+            if (allShown) {
+                button.html('<i class="fas fa-chevron-up"></i> Hide All Festival Details');
+            } else if (allHidden) {
+                button.html('<i class="fas fa-chevron-down"></i> Show All Festival Details');
+            } else {
+                button.html('<i class="fas fa-chevron-up"></i> Mixed Selection');
+            }
+        }
+        
+        // Function to fetch festival details from API
+        function fetchFestivalDetails(festivalId) {
+            // Show loading state
+            const festivalElement = $('#' + festivalId);
+            
+            // In a real application, you would fetch from an actual API endpoint
+            // For demonstration, we'll use a setTimeout to simulate an API call
+            setTimeout(() => {
+                // Mock API response data
+                const festivalData = {
+                    'insam': {
+                        title: 'Geumsan World K-Insam Festival 2025',
+                        description: `<p>The Geumsan World K-Insam Festival is a well-being event that promotes the excellence of ginseng, an herb that strengthens the immune system against cancer and other diseases. Visitors can take part in health-related programs, including the red ginseng foot bath, Korean medicine therapy, and traditional massage at the Health Experience Hall. Visitors can also try foods made with ginseng and check out the various shapes that the medicinal plant comes in and its uses, including makgeolli (unrefined rice wine) and fries. There are booths for a wide variety of activities, such as ginseng harvesting and ginseng art, as well as performances that introduce Geumsan's culture and traditions. Geumsan ginseng can also be purchased at a cheaper price at the festival's market, and its goods can be received directly from within the county.</p>
+                        <p><strong>Geumsan World K-Insam Festival 2025</strong><br>
+                        Venue: Area of Geumsan World Insam Expo Square and Insam Herbal Medicine Market<br>
+                        Date: 19 - 28.09.2025<br>
+                        Website: https://www.insamfestival.co.kr/html/kr/sub2/sub2_020101.html</p>`,
+                        image: 'insam.jpg',
+                        imageAlt: 'Geumsan World K-Insam Festival 2025'
+                    },
+                    'saf': {
+                        title: 'Sapporo Autumn Fest 2025',
+                        description: `<p>During the last three weeks of September, Odori Park in Sapporo bursts with delicious aromas. Every year, the Autumn Fest brings together the best of Hokkaido's gourmet creators. Stalls selling fresh crab, juicy meat dishes, and tasty regional ramen buzz with excited customers. Several bars set up at the festival as well, giving visitors an opportunity to try the local wine, sake, and beer. Roofed dining tents set up around the park allow patrons to enjoy their feasts no matter the weather. Visitors to Sapporo would be remiss to not check out this lively carnival of flavors.</p>
+                        <p><strong>Sapporo Autumn Fest 2025</strong><br>
+                        Venue: Odori Park 4-chome to 8-chome, 10-chome, 11-chome<br>
+                        Date: 06.09 - 04.10.2025<br>
+                        Operation time: 10:00 a.m. - 20:30 p.m.<br>
+                        Website: https://www.sapporo.travel/autumnfest/</p>`,
+                        image: 'saf.jpg',
+                        imageAlt: 'Sapporo Autumn Fest 2025'
+                    },
+                    'gion': {
+                        title: 'Gion Matsuri 2026',
+                        description: `<p>Enjoy centuries old traditions, lively parades, mouth-watering street food, and contagious fun at one of Japan's most popular summertime festivals—Gion Matsuri in Kyoto.</p>
+                        <p><strong>Gion Matsuri 2026</strong><br>
+                        Venue: Yasaka Shrine<br>
+                        Date: 01 - 31.07.2026<br>
+                        Website: https://en.japantravel.com/kyoto/gion-matsuri/32852</p>
+                        <p>The grand parade of floats (Yamaboko Junko) is on July 17th (9am–1pm) and 24th (9:30am–11:50am).</p>
+                        <p>The procession of portable shrines (Mikoshi Togyo) is on July 17th and 24th (the ceremony starts at 4pm on the 17th, with the mikoshi leaving the shrine around 6pm).</p>
+                        <p>Yoiyama evenings on July 14th–16th and 21st–23rd, where Kyoto's downtown area is closed to traffic and filled with food stalls, drink vendors, and festive displays (6pm–11pm).</p>`,
+                        image: 'gion.png',
+                        imageAlt: 'Gion Matsuri 2026'
+                    },
+                    'havoc': {
+                        title: 'HAVOC MERDEKA 2025',
+                        description: `<p>Havoc Food Festival aims to provide quality experiences and hospitality to the bumiputera entrepreneurs involved. The carnival provides an engaging product selling platform as well as an interactive experience to public shoppers. It is also an opportunity for new and existing entrepreneurs to grow their businesses. The carnival can bring the community of entrepreneurs together to provide juadah to the public who attend. This time, Havoc was themed after the 68th Independence Day.</p>
+                        <p><strong>HAVOC MERDEKA 2025</strong><br>
+                        Venue: DATARAN KARNIVAL STADIUM SHAH ALAM<br>
+                        Date: 27 - 31.08.2025<br>
+                        Operation time: 11:00 a.m. - 12:00 a.m.<br>
+                        Website: https://www.instagram.com/p/DNfnDM1TLP9/</p>`,
+                        image: 'havoc.png',
+                        imageAlt: 'HAVOC MERDEKA 2025'
+                    }
+                };
+                
+                // Get data for this specific festival
+                const data = festivalData[festivalId];
+                
+                if (data) {
+                    // Update the festival details with the API response
+                    festivalElement.html(`
+                        <div class="festival-content-container">
+                            <div class="festival-text">
+                                <h4>${data.title}</h4>
+                                ${data.description}
+                                <div class="social-sharing">
+                                    <a href="#" class="social-btn facebook-btn" onclick="shareOnFacebook('${data.title}', window.location.href)">
+                                        <i class="fab fa-facebook-f"></i> Share on Facebook
+                                    </a>
+                                    <a href="#" class="social-btn x-btn" onclick="shareOnX('${data.title}', window.location.href)">
+                                        <i class="fab fa-x-twitter"></i> Share on X
+                                    </a>
+                                    <a href="#" class="social-btn whatsapp-btn" onclick="shareOnWhatsApp('${data.title}', window.location.href)">
+                                        <i class="fab fa-whatsapp"></i> Share on WhatsApp
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="image-container">
+                                <div class="promotion-poster">
+                                    <img src="${data.image}" alt="${data.imageAlt}">
+                                    <div class="poster-caption">${data.imageAlt}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                } else {
+                    // Show error if festival data not found
+                    festivalElement.html(`
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p>Sorry, we couldn't load the details for this festival. Please try again later.</p>
+                        </div>
+                    `);
+                }
+            }, 1000); // Simulate network delay
+        }
+    });
+    
+    // Social sharing functions
+    function shareOnFacebook(title, url) {
+        event.preventDefault();
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title)}`;
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+    
+    function shareOnX(title, url) {
+        event.preventDefault();
+        const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+    
+    function shareOnWhatsApp(title, url) {
+        event.preventDefault();
+        const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' ' + url)}`;
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+</script>
+</body>
+</html>

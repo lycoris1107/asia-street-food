@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japan Street Food</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      background-color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    /* Left Navigation */
+    .sidebar {
+      width: 225px;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      color: white;
+      padding: 30px 0;
+      box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo span {
+      color: #ffd700;
+    }
+
+    .logo i {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 5px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      padding: 15px 30px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    nav ul li a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 4px solid #ffd700;
+    }
+
+    nav ul li a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      color: white;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      padding: 10px 20px;
+      cursor: pointer;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1100;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 255px;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 950px;
+      width: 100%;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .title-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .title-section h1 {
+      font-size: 30px;
+      margin: 0;
+      color: #333;
+      margin-bottom: 25px;
+      font-family: 'Pacifico', cursive;
+    }
+
+    .title-section p {
+      font-size: 14px;
+      color: #666;
+      margin: 5px 0 0;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+
+    .transparent-divider {
+      width: 100%;
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.2);
+      margin: 20px 0;
+    }
+
+    .pattern {
+      flex: 0 0 auto;
+    }
+
+    .pattern img {
+      max-width: 300px;
+      height: auto;
+      display: block;
+    }
+
+    .divider {
+      width: 2px;
+      background-color: #000;
+      margin: 0 20px;
+      align-self: stretch;
+    }
+
+    .explanation {
+      flex: 1;
+      padding-left: 20px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      background-color: #99BBFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .buttons button:hover {
+      background-color: #5599FF;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .bradley-hand {
+      font-family: 'Bradley Hand ITC', 'Indie Flower', 'Comic Sans MS', cursive;
+    }
+
+    /* Responsive Design for Mobile */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        transform: translateX(-100%);
+        z-index: 1000;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 60px 10px 20px;
+      }
+
+      .container {
+        min-height: auto;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pattern img {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .divider {
+        display: none;
+      }
+
+      .explanation {
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Horizontal Navigation in Mobile Mode */
+      nav ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+      }
+
+      nav ul li {
+        margin-bottom: 0;
+      }
+
+      nav ul li a {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+
+      nav ul li a:hover {
+        padding-left: 15px; /* Override desktop hover effect */
+      }
+
+      nav ul li a.active {
+        border-left: none;
+        border-bottom: 4px solid #ffd700;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Left Navigation -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <h1>
+        <i class="fas fa-utensils"></i>
+        Asia<span>Street Food</span>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="navigation.html"><i class="fas fa-compass"></i> Navigation</a></li>
+        <li><a href="news.html"><i class="fas fa-newspaper"></i> News</a></li>
+        <li><a href="membership.html"><i class="fas fa-user-plus"></i> Membership</a></li>
+
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <div class="title-section">
+        <h1>Japan Street Food</h1>
+        <p>From sizzling Takoyaki to savory Okonomiyaki, Japan’s street food is a celebration of flavor, texture, and tradition.</p>
+      </div>
+      <div class="transparent-divider"></div>
+      <div class="content">
+        <div class="pattern">
+          <img src="Yakitori.jpg" alt="Yakitori">
+        </div>
+        <div class="divider"></div>
+        <div class="explanation">
+          <h1 class="bradley-hand">Yakitori</h1>
+          <p>Yakitori refers to Japanese-style grilled chicken skewers enjoyed in specialty restaurants and Japanese gastropubs called izakaya. Translating to “grilled” (yaki) + “chicken” (tori), versions of this dish have been a staple of Japanese cuisine for centuries. In countless yakitori restaurants around Tokyo, notably in Shinjuku’s Yakitori Alley, it’s typically cooked over a hot Japanese binchotan charcoal grill.</p>
+          <div class="buttons">
+            <button onclick="showModal('recipe')">Recipe</button>
+          </div>
+        </div>
+      </div>
+      <div class="transparent-divider"></div>
+      <div class="content">
+        <div class="pattern">
+          <img src="Takoyaki.jpg" alt="Takoyaki">
+        </div>
+        <div class="divider"></div>
+        <div class="explanation">
+          <h1 class="bradley-hand">Takoyaki</h1>
+          <p>Takoyaki is a Japanese street food that originated in Osaka around 1935 before spreading to greater south-central Japan. It’s now synonymous with Osaka cuisine. You will typically find it sold by street vendors, convenience stores, and specialty restaurants. It is usually served with slightly salty takoyaki sauce and pairs perfectly with beer and other Japanese gastropub (izakaya) fare.</p>
+          <div class="buttons">
+            <button onclick="showModal('recipe2')">Recipe</button>
+          </div>
+        </div>
+      </div>
+      <div class="transparent-divider"></div>
+      <div class="content">
+        <div class="pattern">
+          <img src="Taiyaki.jpg" alt="Taiyaki">
+        </div>
+        <div class="divider"></div>
+        <div class="explanation">
+          <h1 class="bradley-hand">Taiyaki</h1>
+          <p>Taiyaki (鯛焼き) is one of the quintessential summer festival foods in Japan. It is a warm, waffle-style snack cake. Tai means “sea bream” and yaki means “grilled/baked.” It’s made in a cast iron mold shaped like an auspicious fish called red sea bream. Sweet red bean paste (anko) is the typical filling, but custard filling is also quite popular. You can also find it filled with chocolate, Nutella, or even cheese.</p>      
+          <div class="buttons">
+            <button onclick="showModal('recipe3')">Recipe</button>
+          </div>
+        </div>
+      </div>
+      <div class="transparent-divider"></div>
+      <div class="content">
+        <div class="pattern">
+          <img src="Negiyaki.jpg" alt="Negiyaki">
+        </div>
+        <div class="divider"></div>
+        <div class="explanation">
+          <h1 class="bradley-hand">Negiyaki</h1>
+          <p>Negiyaki (ねぎ焼き) was invented in the 1960s by a widowed mother of seven children who opened the Osaka shop Negiyaki Yamamoto as an okonomiyaki restaurant. She cooked her kids a daily after-school snack of okonomi batter packed with chopped green onions instead of cabbage. This dish’s signature scallion flavor is now the famed “taste of Osaka.” Negiyaki is a fluffy and light Japanese savory pancake packed with refreshing and crunchy green onions and brushed with fragrant soy sauce or okonomiyaki sauce. This grilled Osaka specialty makes a delicious appetizer or main dish!</p>
+          <div class="buttons">
+            <button onclick="showModal('recipe4')">Recipe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <div id="recipeModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('recipe')">&times;</span>
+      <h2>Recipe</h2>
+      <ul>
+        <p>For the Yakitori Sauce:</p>
+        <li>½ cup soy sauce</li>
+        <li>½ cup mirin</li>
+        <li>¼ cup sake</li>
+        <li>¼ cup water</li>
+	      <li>2 tsp brown sugar</li>
+	
+	      <p>For the Chicken Skewers：</p>
+	      <li>2 Tokyo negi (or 9 green onions)</li>
+      	<li>1 lb boneless, skinless chicken thighs</li>
+	      <li>neutral oil</li>
+	      <li>shichimi togarashi (Japanese seven spice)</li>
+	
+	      <p>Instructions:</p>
+        <li>Use teppogushi or “gun skewers” that have a flat tab for a handle. If you can‘t find them, you can use regular bamboo skewers.</li>
+        <li>Soak 10–12 5-inch bamboo skewers in water for 30 minutes (or at least 10 minutes while prepping the ingredients).</li>
+        <li>Separate the green part of 2 Tokyo negi (naga negi; long green onion) from the white and light green parts. Cut the white and light green parts into 1¼-inch (3-cm) pieces. Cut the green parts in half crosswise.</li>
+	
+        <p>To Make the Yakitori Sauce (Tare):</p>
+        <li>To a small saucepan, add ½ cup soy sauce, ½ cup mirin, ¼ cup sake, and ¼ cup water.</li>
+        <li>Add 2 tsp brown sugar and the green part of the Tokyo negi.</li>
+        <li>Bring it to a boil over high heat. Once boiling, reduce the heat to low and simmer, uncovered, until the sauce reduces to one-third of its original volume. It will take about 30 minutes. Let it cool to room temperature before using. The sauce will thicken with a glossy shine as it cools. Tip: You can make the sauce ahead of time. To store, remove the green onion and pour into a mason jar. Keep in the refrigerator for up to 2–3 months.</li>
+        <li>To serve yakitori with extra sauce, reserve one-third of the sauce in a small bowl for final basting, just before serving. To prevent cross-contamination, use this reserved sauce with a clean brush only after the chicken is fully cooked.</li>	
+
+        <p>To Assemble the Skewers:</p>
+        <li>Cut 1 lb boneless, skinless chicken thighs into 1¼-inch (3-cm) squares.</li>
+        <li>On a flat work surface, fold a slice of chicken in half. Holding the skewer at a 45-degree angle, pierce the side of the folded meat. Then, tilt the skewer down so it‘s parallel to the work surface and thread it all the way through. Position the chicken next to the handle.</li>
+        <li>Next, add a piece of Tokyo negi perpendicular to the skewer, packing it snuggly next to the chicken piece.Add another piece of chicken, then another piece of Tokyo negi.</li>      
+        <li>End with a piece of chicken. Each 5-inch skewer will hold about 3 chicken slices and 2 Tokyo negi pieces.</li>
+
+        <p>To Broil/Grill the Yakitori:</p>
+        <li>Line a baking sheet with aluminum foil for easy cleanup. Place an oven-safe wire rack on top. Grease the grate of the wire rack with neutral oil to keep the chicken from sticking.</li>
+        <li>Place the skewers on top in two rows, with the handles resting along the edges of the baking sheet. Cover the top and bottom of the handles with folded strips of aluminum foil to prevent burning.</li>
+        <li>Turn on the broiler to High (550ºF/288ºC) with a rack placed on the middle position of the oven, about 8 inches (20 cm) away from the heating element. Wait until the heating elements are hot, about 3–5 minutes. Then, place the skewers under the broiler. Broil for 6 minutes. When broiling don‘t adjust the oven temperature; instead, control the distance between the heating element and the surface of the food.</li>
+        <li>After 6 minutes, brush the meat and Tokyo negi with the yakitori sauce.</li>
+        <li>Flip the skewers carefully with a pair of tongs. Brush the sauce on the other side. Continue to broil for 3–4 minutes to caramelize the sauce.</li>
+        <li>Finally, flip one more time (this is the presentation side). Baste with the sauce, then broil for an additional 1–2 minutes. Remove the baking sheet from the oven.</li>
+
+        <p>To Serve:</p>
+        <li>Transfer the skewers to a serving plate, presentation side up. Optionally, with a clean brush, baste the top of the chicken skewers with the reserved sauce. Serve with shichimi togarashi (Japanese seven spice) and enjoy!</li>
+
+      </ul>
+    </div>
+  </div>
+
+  <div id="recipe2Modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('recipe2')">&times;</span>
+      <h2>Recipe</h2>
+      <ul>
+        <p>Ingredients：</p>
+        <li>¼ cup katsuobushi (dried bonito flakes)</li>
+        <li>2 green onions/scallions</li>
+        <li>1 Tbsp pickled red ginger</li>
+        <li>2 Tbsp neutral oil</li>
+        <li>⅓ cup tenkasu/agedama (tempura scraps)</li>
+	
+	      <p>For the Batter:</p>
+	      <li>1 cup all-purpose flour (plain flour)</li>
+	      <li>2 tsp baking powder</li>
+      	<li>½ tsp Diamond Crystal kosher salt</li>
+	      <li>2 large eggs (50 g each w/o shell)</li>
+	      <li>1 tsp soy sauce</li>
+	      <li>1½ cups dashi (Japanese soup stock)</li>
+	
+	      <p>For the Toppings：</p>
+      	<li>½ cup takoyaki sauce</li>
+	      <li>Japanese Kewpie mayonnaise</li>
+	      <li>katsuobushi (dried bonito flakes)</li>
+	      <li>aonori (dried green laver seaweed)</li>
+        <li>pickled red ginger (beni shoga or kizami beni shoga)</li>
+	
+        <p>Instructions:</p>
+        <li>Grind ¼ cup katsuobushi (dried bonito flakes) into a fine powder. Set aside to use during cooking.</li>
+        <li>Cut 2 green onions/scallions into thin slices and mince 1 Tbsp pickled red ginger (beni shoga or kizami beni shoga). Cut 4.2 oz octopus sashimi (boiled octopus) into bite-sized pieces about ½ inch (1.3 cm).</li>
+
+        <p>To make the Batter:</p>
+        <li>Combine 1 cup all-purpose flour (plain flour), 2 tsp baking powder, and ½ tsp Diamond Crystal kosher salt in a large mixing bowl. Whisk it all together.</li>
+        <li>Add 2 large eggs (50 g each w/o shell), 1 tsp soy sauce, and 1½ cups dashi (Japanese soup stock) to the bowl.</li>
+        <li>Whisk until well blended. Transfer it to a handled measuring cup or any pitcher with a spout for easy pouring.</li>
+
+        <p>To Cook the Takoyaki:</p>
+        <li>Heat the takoyaki pan to 400ºF (200ºC) over medium heat. Use a brush to generously grease the rounded chambers and flat top surface with 2 Tbsp neutral oil. When the oil starts to smoke, pour the batter to fill the chambers. It’s okay to slightly overfill the cavities. In the next steps, the batter will likely overflow as you add more ingredients to it.</li>
+        <li>Add 1–3 octopus pieces, depending on their size, to each chamber and sprinkle the ground katsuobushi powder on top.</li>
+        <li>Sprinkle ⅓ cup tenkasu/agedama (tempura scraps), the green onion slices, and the chopped pickled red ginger on top. After 3 minutes or so, when the batter on the bottom has set and is slightly crisp, use skewers to break the connected batter on top between the chambers. Rotate each piece 90 degrees (a quarter turn) toward the bottom of the pan. Stuff the connected dough back into the ball as you turn; the uncooked batter will flow out from inside to create another side of the ball. After you finish turning them, set a timer for 4 minutes.</li>  
+        <li>After 4 minutes, rotate them again, starting with the first ball. Turn each takoyaki another 90 degrees toward the bottom of the pan so the remaining uncooked batter pours out into the chamber to complete the ball shape. Home takoyaki griddles don‘t distribute heat evenly, so it’s a good idea to swap the balls around to different chambers so they brown evenly. After turning and cooking for another 4 minutes, they are done.</li>
+
+        <p>To Serve:</p>
+        <li>Transfer them onto a plate and drizzle with ½ cup takoyaki sauce and Japanese Kewpie mayonnaise. Sprinkle with katsuobushi (dried bonito flakes) and aonori (dried green laver seaweed) and serve with a side of pickled red ginger (beni shoga or kizami beni shoga). Serve immediately.</li>
+      </ul>
+    </div>
+  </div>
+
+    <div id="recipe3Modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('recipe3')">&times;</span>
+      <h2>Recipe</h2>
+      <ul>
+        <p>Ingredients：</p>
+        <li>1¼ cups cake flour</li>
+        <li>1 tsp baking powder</li>
+        <li>1 tsp baking soda</li>
+        <li>3 Tbsp sugar</li>
+        <li>1 large egg (50 g each w/o shell)</li>
+        <li>¾ cup whole milk</li>
+        <li>8 Tbsp sweet red bean paste (anko)</li>
+        <li>1 Tbsp neutral oil </li>
+	
+	      <p>For the Batter:</p>
+        <li>Sift 1¼ cups cake flour, 1 tsp baking powder, and 1 tsp baking soda into a large bowl.</li>
+        <li>Add 3 Tbsp sugar and whisk well to combine.</li>
+        <li>In a medium bowl, whisk 1 large egg (50 g each w/o shell) and then add ¾ cup whole milk (¾ cup + 4 tsp). Combine well.</li>
+        <li>Pour the wet ingredients into the dry ingredients and whisk well. Keep the batter in the refrigerator for at least one hour to rest and let the flour absorb the liquid. Tip: Whisking the batter creates gluten; by letting it rest, the batter will relax and become smooth.</li>
+        <li>Pour the batter into a measuring cup or jug. You should have about 1¼ cups.</li>
+	
+      	<p>To Cook the Taiyaki：</p>
+      	<li>Preheat the taiyaki maker over medium-low heat. When it‘s hot, grease the pan with some of the 1 Tbsp neutral oil using a brush.</li>
+      	<li>Fill the taiyaki pan mold about 60% full of batter.</li>
+	      <li>In the center of each mold, put about 1 Tbsp of the 8 Tbsp sweet red bean paste (anko) and pour more batter on top to cover it.</li>
+      	<li>Close the lid and immediately flip.</li>
+        <li>Cook for 2 to 2½ minutes on that side. Then flip and cook for another 2 to 2½ minutes. Open and check to see if the taiyaki is golden brown. Remove from the pan and cool on a wire rack. Continue cooking the remaining taiyaki.</li>
+
+        <p>To Serve:</p>
+        <li>Serve warm. If the taiyaki get cold, you can toast them in the toaster oven or oven until they‘re crispy on the outside.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="recipe4Modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('recipe4')">&times;</span>
+      <h2>Recipe</h2>
+      <ul>
+        <p>Ingredients：</p>
+        <li>14 green onions/scallions (8 oz, 227 g)</li>
+        <li>4 oz sliced pork belly</li>
+        <li>½ cup katsuobushi (dried bonito flakes)</li>
+        <li>½ cup all-purpose flour (plain flour)</li>
+        <li>½ tsp baking powder</li>
+        <li>4 Tbsp tenkasu/agedama (tempura scraps)</li>
+        <li>2 large eggs (50 g each w/o shell)</li>
+        <li>½ tsp soy sauce</li> 
+        <li>⅓ cup water</li>
+        <li>neutral oil</li>
+	
+	      <p>To Prepare the Ingredients:</p>
+        <li>Discard the ends of 14 green onions/scallions. Then, thinly slice the green onions crosswise into rounds.</li>
+        <li>Cut 4 oz sliced pork belly into strips 5 inches (13 cm) long. I used kitchen shears. I also cut off the fatty ends.</li>
+        <li>Grind ½ cup katsuobushi (dried bonito flakes) into a powder using a mortar and pestle. You should have 4 tsp katsuobushi powder; set aside half for the batter and half for cooking the pancakes.</li>
+
+      	<p>To Mix the Batter：</p>
+        <li>First, put the chopped green onions in a large bowl. Then, add ½ cup all-purpose flour (plain flour). Toss with a spoon to coat the green onions in the flour. DO NOT overmix. It‘s OK to leave some flour at the bottom of the bowl.</li>
+        <li>To the bowl, add ½ tsp baking powder, 4 Tbsp tenkasu/agedama (tempura scraps), 2 tsp katsuobushi powder, 2 large eggs (50 g each w/o shell), ½ tsp soy sauce, and ⅓ cup water.</li>
+        <li>Mix with a spoon until just combined. DO NOT overmix. Use the spoon to divide the batter in half in the bowl (for two pancakes). </li>
+	
+        <p>To Cook the Negiyaki:</p>
+        <li>Heat two large frying pans or a large griddle over medium heat. When hot, add 1 Tbsp neutral oil to each pan. When the oil is hot, spoon half the batter into each pan. Spread the batter in a round shape about 5–6 inches (13–15 cm) across.</li>
+        <li>Using two spatulas, flip the pancakes over.</li>
+        <li>Gently press down on the pancakes and fix the round shape, if needed. Reduce the heat to low. Cover the pans with their lids and cook for 4 minutes.</li>
+        <li>Open the lids and flip again.Increase the heat to medium and cook, uncovered, for 1 minute. Transfer to individual plates. The side with the pork belly should be facing up.</li>
+
+        <p>To Serve:</p>
+        <li>For a soy sauce flavor, brush the negiyaki with soy sauce and drizzle with a zigzag pattern of Japanese Kewpie mayonnaise</li>
+        <li>For an okonomi sauce flavor, use a spoon to spread okonomi sauce on the negiyaki and drizzle with a zigzag pattern of Japanese mayonnaise.</li>    
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function showModal(type) {
+      document.getElementById(type + 'Modal').style.display = 'flex';
+    }
+
+    function closeModal(type) {
+      document.getElementById(type + 'Modal').style.display = 'none';
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        document.getElementById('recipeModal').style.display = 'none';
+        document.getElementById('recipe2Modal').style.display = 'none';
+        document.getElementById('recipe3Modal').style.display = 'none';
+        document.getElementById('recipe4Modal').style.display = 'none';
+
+      }
+    }
+  </script>
+</body>
+</html>

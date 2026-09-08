@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chinese Southern Street Food</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      background-color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    /* Left Navigation */
+    .sidebar {
+      width: 225px;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      color: white;
+      padding: 30px 0;
+      box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo span {
+      color: #ffd700;
+    }
+
+    .logo i {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 5px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      padding: 15px 30px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    nav ul li a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 4px solid #ffd700;
+    }
+
+    nav ul li a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      color: white;
+      background: linear-gradient(to bottom, #d35400, #e67e22);
+      padding: 10px 20px;
+      cursor: pointer;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1100;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 255px;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 950px;
+      width: 100%;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ccc;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .title-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .title-section h1 {
+      font-size: 30px;
+      margin: 0;
+      color: #333;
+      margin-bottom: 25px;
+      font-family: 'Pacifico', cursive;
+    }
+
+    .title-section p {
+      font-size: 14px;
+      color: #666;
+      margin: 5px 0 0;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+
+    .transparent-divider {
+      width: 100%;
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.2);
+      margin: 20px 0;
+    }
+
+    .pattern {
+      flex: 0 0 auto;
+    }
+
+    .pattern img {
+      max-width: 300px;
+      height: auto;
+      display: block;
+    }
+
+    .divider {
+      width: 2px;
+      background-color: #000;
+      margin: 0 20px;
+      align-self: stretch;
+    }
+
+    .explanation {
+      flex: 1;
+      padding-left: 20px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      background-color: #99BBFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .buttons button:hover {
+      background-color: #5599FF;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .bradley-hand {
+      font-family: 'Bradley Hand ITC', 'Indie Flower', 'Comic Sans MS', cursive;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 30px;
+        transform: translateX(-100%);
+        z-index: 1000;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 60px 10px 20px;
+      }
+
+      .container {
+        min-height: auto;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .pattern img {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .divider {
+        display: none;
+      }
+
+      .explanation {
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+      }
+
+      nav ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+      }
+
+      nav ul li {
+        margin-bottom: 0;
+      }
+
+      nav ul li a {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+
+      nav ul li a:hover {
+        padding-left: 15px; /* Override desktop hover effect */
+      }
+
+      nav ul li a.active {
+        border-left: none;
+        border-bottom: 4px solid #ffd700;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Left Navigation -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <h1>
+        <i class="fas fa-utensils"></i>
+        Asia<span>Street Food</span>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="navigation.html"><i class="fas fa-compass"></i> Navigation</a></li>
+        <li><a href="news.html"><i class="fas fa-newspaper"></i> News</a></li>
+        <li><a href="membership.html"><i class="fas fa-user-plus"></i> Membership</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <div class="title-section">
+        <h1>Chinese Southern Street Food</h1>
+  <p>Street food in southern China is characterized by its vast variety and diverse flavors. Typically featuring sweet, savory, and umami tastes, it emphasizes the natural essence of ingredients and refined cooking techniques, often intertwined with local cultural traditions.</p>
+    </div>
+<div class="transparent-divider"></div>
+    <div class="content">
+      <div class="pattern">
+        <img src="SourSoupFish.jpeg" alt="Sour Soup Fish">
+      </div>
+      <div class="divider"></div>
+      <div class="explanation">
+        <h1 class="bradley-hand">Sour Soup Fish</h1>
+        <p>Sour Soup Fish is a specialty dish from Guizhou Province, China. Originating hundreds of years ago from the Miao cuisine of Qiandongnan Miao and Dong Autonomous Prefecture, it has traditionally been served at Miao weddings, full-moon banquets for newborns, gatherings, and to entertain guests.</p>
+        <p>Historically, the Qiannan region of Guizhou faced transportation challenges and salt scarcity. To overcome these difficulties, locals innovatively developed a fermentation process to create sour soup, which served both as a seasoning and a preservative. This gave rise to a unique culinary tradition of “substituting sourness for salt,” laying the foundation for the creation of sour soup fish.</p>
+        <div class="buttons">
+          <button onclick="showModal('recipe')">Recipe</button>
+        </div>
+      </div>
+    </div>
+
+<div class="transparent-divider"></div>
+    <div class="content">
+      <div class="pattern">
+        <img src="HunanStyleSoyRoastedDuck.jpeg" alt="Hunan Style Soy Roasted Duck">
+      </div>
+      <div class="divider"></div>
+      <div class="explanation">
+        <h1 class="bradley-hand">Hunan Style Soy Roast Duck</h1>
+        <p>Hunan-style Soy Sauce Roast Duck is a signature dish originating from China's Hunan Province, renowned for its distinctive marinating sauce and roasting technique. This dish undergoes multiple intricate processes including marinating, roasting, braising, and dehydration, ultimately delivering a richly layered texture and unique flavor profile. It stands as a star dish on Hunan dining tables.</p>
+        <div class="buttons">
+          <button onclick="showModal('recipe2')">Recipe</button>
+        </div>
+      </div>
+    </div>
+
+
+
+  <div id="recipeModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('recipe')">&times;</span>
+      <h2>Recipe</h2>
+      <ul>
+	<p>Ingredients：</p>
+        <li>Pangasius Fillet 500g</li>
+        <li>Organic sauerkraut 200-300g</li>
+        <li>50g mushrooms</li>
+        <li>Pickled pepper 30g</li>
+	<li>30g of oil</li>
+	<li>Bubble ginger 30g</li>
+        <li>Water 1200g</li>
+        <li>10g garlic slices</li>
+        <li>Cooking wine 30g</li>
+	<li>10g scallions</li>
+	<li>1/2 tablespoon of pepper</li>
+        <li>1 tablespoon of chicken essence</li>
+        <li>1-2 spoons of salt</li>
+        <li>1/2 tbsp starch</li>
+	<li>1 tablespoon of pepper</li>
+	
+	<p>Steps ：</p>
+	<li>Clean the organic sauerkraut and soak in water for 20 minutes, drain the water and cut into shreds for later use</li>
+        <li>Put the sliced fish, cooking wine, pepper, 1/2 spoon of salt, starch, into a bowl, mix well and marinate for 15 minutes.</li>
+        <li>Put pickled peppers and pickled ginger into the mixing bowl, chop them at 10 seconds/speed 4, scrape the bottom of the pan with a spatula, put the oil, pepper, green onion, garlic slices, and sauerkraut evenly on both sides of the butterfly stick , Stir fry at 120 degrees/5 minutes/reversed spoon</li>
+        <li> Add mushroom slices, water, chicken essence, and 1 spoon of salt, and cook at 110 degrees/20 minutes/reverse spoon. When the remaining</li>
+	<li>5 minutes, add the marinated fish fillets from the hole in the mixing bowl, and place it on the plate.</li>	
+      </ul>
+    </div>
+  </div>
+
+
+
+  <div id="recipe2Modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('recipe2')">&times;</span>
+      <h2>Recipe</h2>
+      <ul>
+	<p>Ingredients：</p>
+        <li> A whole duck (2 kg)</li>
+        <li> 100 grams of coarse sea salt (5% of the duck weight)</li>
+        <li> 2 slices of sand ginger</li>
+        <li> 2 star anise</li>
+	<li> 1 small cinnamon stick</li>
+	<li> 2 bay leaves</li>
+        <li> 2 cloves</li>
+        <li> 2 white cardamom</li>
+        <li> 1 gardenia fruit pod</li>
+	<li> 1 tsp of white peppercorns</li>
+	<li> 1 tsp of fennel seeds</li>
+        <li> 3 tbsp of Sichuan peppercorn, or to taste</li>
+        <li> ½ cup of red dried chilies or to taste</li>
+        <li> 2 tbsp of oil</li>
+	<li> 2 inches of ginger, sliced thinly</li>
+	<li> 5 cloves of garlic</li>
+        <li> 2 scallions</li>
+        <li> 1 tbsp of Sichuan Dou Ban Jiang</li>
+        <li> 6 cups of purified water</li>
+	<li> 5 tbsp of soy sauce</li>
+	<li> 3 tbsp of dark soy sauce, for the color</li>
+        <li> ¼ cup of Chinese cooking wine</li>
+        <li> 5 tbsp of rock sugar</li>
+  
+	<p>Method：</p>
+	<li>Use a pair of scissors to cut open the duck cavity (slightly off the center in between both of the breasts). Trim off any unwanted parts such as the connective tissues, the huge piece of the neck skin, the butt, and some duck fat.</li>
+        <li>Rinse the duck thoroughly under running water. Use paper towels to absorb the moisture.</li>
+        <li>Put the duck on a big try, skin side up. Flatten the duck by pressing it down firmly. You should be able to hear a few cracking sounds when you break up the thigh, ribs and clavicles.</li>
+        <li>Coat the duck with a large amount of coarse sea salt. Don’t worry that it be will too salty because it is coarse salt, it doesn’t dissolve easily. Tomorrow we will rinse off the salt as well.</li>
+	<li>Put a flat board on the duck then weigh it down with a huge pot that is filled with water. Set it in the fridge for 12 hours. The purpose of the salt and the pressure is to press the moisture out of the duck. Later on, when we braise it, it will absorb the flavor from the brine.</li>	
+	<li>The next day, rinse the duck thoroughly with some boiling hot water. This will shrink up the skin and wash off all the salt so the duck will not be too salty. Wipe off the moisture with a paper towel.</li>
+        <li>Preheat the oven to 450 F. Place the duck on a rack on top of a baking pan.</li>
+        <li>Heat a heavy-duty cast-iron skillet until smoking hot. Flip the skillet over and apply a thin layer of oil at the bottom.</li>
+        <li>Put the duck into the oven and place the hot heavy skillet right on top of the duck. Bake for 30 minutes to render the fat.</li>
+	<li>While waiting, we can prepare the braising brine. Add oil to a large pot. Add all the dried spices along with the ginger slices, garlic cloves, and scallions. Stir over medium heat for a couple of minutes or until fragrant.</li>
+	<li>Add 5-6 cups of bottled water or distilled water then bring to a boil. Do not use tap water as it will ruin the quality of your Lushui.</li>
+        <li>Add soy sauce, dark soy sauce, Chinese cooking wine, and rock sugar. Simmer for 15 minutes. Chinese master sauce is supposed to be a lot saltier than your normal taste so it can infuse its flavor into the ingredients you want to cook in it.</li>
+        <li>Take the duck out of the oven and remove the cast iron skillet. You should be able to see lots of greases formed in the banking pan. If you don’t have a cast-iron skillet, you can wrap a heavy-duty brick with tin foil. Preheat it until hot and place it onto the duck.</li>
+        <li>Transfer this duck into the braising brine (you can cut the duck smaller if your pot doesn’t fit). Braised on low heat for 1 hour.</li>
+	<li>Transfer the duck onto a baking rack - skin side up. Stick it into the oven again. Set the temperature at the lowest. Let it dehydrate for 6-8 hours. The time varies depending on your oven’s minimum temperature.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function showModal(type) {
+      document.getElementById(type + 'Modal').style.display = 'flex';
+    }
+
+    function closeModal(type) {
+      document.getElementById(type + 'Modal').style.display = 'none';
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        document.getElementById('recipeModal').style.display = 'none';
+        document.getElementById('recipe2Modal').style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
